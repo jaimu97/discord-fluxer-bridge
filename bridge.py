@@ -2,6 +2,7 @@ import discord
 import fluxer
 import logging
 import asyncio
+import aiohttp
 import os
 from dotenv import load_dotenv
 
@@ -142,7 +143,7 @@ def main(): # public static void main (String args [])
         )
         if not value
     ]
-    if missing:
+    if fuckups:
         raise SystemExit(f"Oopsie poopsie, you forgot these value(s) in your .env: {", ".join(missing)}\n"
                           "Please check the .env.example and try again.")
 
@@ -156,3 +157,7 @@ def main(): # public static void main (String args [])
         raise NotImplementedError
     except Exception as e:
         raise SystemError(f"Uh oh, little fucky wucky here: {e}")
+
+
+if __name__ == "__main__":
+    main()
