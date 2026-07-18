@@ -49,16 +49,26 @@ fluxer_lock               = None
 fluxer_identity_overrides = True
 
 
+async def relay(message: discord.Message | fluxer.Message, from_fluxer : bool) -> None:
+    global fluxer_identity_overrides
+    
+    # DEBUG:
+    expected_type = fluxer.Message if from_fluxer else discord.Message
+    direction = "Fluxer -> Discord" if from_fluxer else "Discord -> Fluxer"
+    logging.info("Should've relayed message %s (%s), content=%r", message.id, direction, message.content)
+    # END DEBUG
+
+
 @discord_client.event
-async def on_ready():
+async def on_ready() -> None:
     logging.info("Discord connected")
 
 @fluxer_client.event
-async def on_ready():
+async def on_ready() -> None:
     logging.info("Fluxer connected")
 
 @discord_client.event
-async def on_message(message):
+async def on_message(message: discord.Message) -> None:
     # ignore other channels, bots, webhooks (inc. itself), etc.
     if (
         message.channel.id != int(DISCORD_CHANNEL_ID)
@@ -75,7 +85,7 @@ async def on_message(message):
         logging.error("Discord message %s failed (%s)", message.id, type(error).__name__)
 
 @fluxer_client.event
-async def on_message(message):
+async def on_message(message: fluxer.Message) -> None:
     # fluxer.py doesn't seem to expose webhook_id, so yipee? hope that's not needed in the future...
     if message.channel_id != int(FLUXER_CHANNEL_ID) or message.author.bot:
         return
@@ -141,8 +151,8 @@ def main(): # public static void main (String args [])
             ("FLUXER_WEBHOOK_URL",  FLUXER_WEBHOOK_URL),
             ("DISCORD_CHANNEL_ID",  DISCORD_CHANNEL_ID),
             ("FLUXER_CHANNEL_ID",   FLUXER_CHANNEL_ID),
-            ("FLUXER_API_URL",      FLUXER_API_URL),
-        )\
+            ("FLUXER_API_URL",      FLUXER_API_URL)
+        )
         if not value
     ]
     if fuckups:
