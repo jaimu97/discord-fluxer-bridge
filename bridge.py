@@ -49,7 +49,6 @@ fluxer_lock               = None
 fluxer_identity_overrides = True
 
 
-
 @discord_client.event
 async def on_ready():
     logging.info("Discord connected")
@@ -140,11 +139,14 @@ def main(): # public static void main (String args [])
             ("DISCORD_WEBHOOK_URL", DISCORD_WEBHOOK_URL),
             ("FLUXER_BOT_TOKEN",    FLUXER_BOT_TOKEN),
             ("FLUXER_WEBHOOK_URL",  FLUXER_WEBHOOK_URL),
-        )
+            ("DISCORD_CHANNEL_ID",  DISCORD_CHANNEL_ID),
+            ("FLUXER_CHANNEL_ID",   FLUXER_CHANNEL_ID),
+            ("FLUXER_API_URL",      FLUXER_API_URL),
+        )\
         if not value
     ]
     if fuckups:
-        raise SystemExit(f"Oopsie poopsie, you forgot these value(s) in your .env: {", ".join(missing)}\n"
+        raise SystemExit(f"Oopsie poopsie, you forgot these value(s) in your .env: {", ".join(fuckups)}\n"
                           "Please check the .env.example and try again.")
 
     logging.basicConfig(
